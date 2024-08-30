@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -32,9 +33,13 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton wristUp = new JoystickButton(driver, XboxController.Button.kX.value);
+    private final JoystickButton wristDown = new JoystickButton(driver, XboxController.Button.kB.value);
+
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+    private final Wrist m_wristSubsystem = new Wrist();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -44,7 +49,7 @@ public class RobotContainer {
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(rotationAxis), 
+                () -> driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
         );
@@ -62,6 +67,9 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+
+        wristUp.onTrue(new InstantCommand(() -> m_wristSubsystem.setAngle(Rotation2d.fromDegrees(20))));
+        wristDown.onTrue(new InstantCommand(() -> m_wristSubsystem.setAngle(Rotation2d.fromDegrees(0))));
     }
 
     /**

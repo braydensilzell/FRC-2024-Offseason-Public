@@ -1,5 +1,14 @@
 package frc.robot;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -14,16 +23,15 @@ import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
-
     public static final class Swerve {
-        public static final int pigeonID = 1;
+        public static final int pigeonID = 0;
 
         public static final COTSTalonFXSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
         COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L2);
 
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(21.73); //TODO: This must be tuned to specific robot
-        public static final double wheelBase = Units.inchesToMeters(21.73); //TODO: This must be tuned to specific robot
+        public static final double trackWidth = Units.inchesToMeters(17.5); //TODO: This must be tuned to specific robot
+        public static final double wheelBase = Units.inchesToMeters(17.5); //TODO: This must be tuned to specific robot
         public static final double wheelCircumference = chosenModule.wheelCircumference;
 
         /* Swerve Kinematics 
@@ -92,8 +100,8 @@ public final class Constants {
         public static final class Mod0 { //TODO: This must be tuned to specific robot
             public static final int driveMotorID = 1;
             public static final int angleMotorID = 2;
-            public static final int canCoderID = 1;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final int canCoderID = 9;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(3.86);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -102,8 +110,8 @@ public final class Constants {
         public static final class Mod1 { //TODO: This must be tuned to specific robot
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 4;
-            public static final int canCoderID = 2;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final int canCoderID = 10;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(60.38);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -112,8 +120,8 @@ public final class Constants {
         public static final class Mod2 { //TODO: This must be tuned to specific robot
             public static final int driveMotorID = 5;
             public static final int angleMotorID = 6;
-            public static final int canCoderID = 3;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final int canCoderID = 11;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-33.22);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -122,11 +130,62 @@ public final class Constants {
         public static final class Mod3 { //TODO: This must be tuned to specific robot
             public static final int driveMotorID = 7;
             public static final int angleMotorID = 8;
-            public static final int canCoderID = 4;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final int canCoderID = 12;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(32.95);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
+    }
+
+    public static final class WristConstants {
+        public static final int wristTalonID = 16;
+
+        public static final double wristGearRatio = 111.65; // Sensor to Mechanism Ratio
+
+        public static final double WristIntakeAngle = 10;
+
+        public static final double wristMinClamp = 0;
+        public static final double wristMaxClamp = 58;
+
+        public static final Rotation2d wristMinAngle = Rotation2d.fromDegrees(wristMinClamp);
+        public static final Rotation2d wristMaxAngle = Rotation2d.fromDegrees(wristMaxClamp);
+
+        public static final TalonFXConfiguration kWristConfiguration = new TalonFXConfiguration()
+      .withCurrentLimits(new CurrentLimitsConfigs()
+        .withStatorCurrentLimit(60)
+        .withSupplyCurrentLimit(60)
+        .withStatorCurrentLimitEnable(true)
+        .withSupplyCurrentLimitEnable(true))
+      .withMotorOutput(new MotorOutputConfigs()
+        .withNeutralMode(NeutralModeValue.Brake)
+        .withInverted(InvertedValue.CounterClockwise_Positive))
+      .withMotionMagic(new MotionMagicConfigs()
+        .withMotionMagicCruiseVelocity(0.45)
+        .withMotionMagicAcceleration(0.45)
+        .withMotionMagicJerk(0))
+      .withSlot0(new Slot0Configs()
+        .withKV(0)
+        .withKA(0)
+        .withKP(1300) //1000
+        .withKI(0)
+        .withKD(1)
+        .withGravityType(GravityTypeValue.Arm_Cosine)
+        .withKG(6)
+        .withKS(0))
+      .withFeedback(new FeedbackConfigs()
+        //  .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
+        //  .withFeedbackRemoteSensorID(pivotEncoderID)
+      .withSensorToMechanismRatio(wristGearRatio))
+        //  .withRotorToSensorRatio(pivotGearRatio))
+      .withSoftwareLimitSwitch(new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitEnable(true)
+        .withReverseSoftLimitEnable(true)
+        .withForwardSoftLimitThreshold(wristMaxAngle.getRotations())
+        .withReverseSoftLimitThreshold(wristMinAngle.getRotations()));
+
+        public static final MotionMagicExpoVoltage wristPositionControl = new MotionMagicExpoVoltage(0, true, 0, 0, true, false, false);
+    
+        public static final Rotation2d angleErrorTolerance = Rotation2d.fromDegrees(2.5); // Degrees
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
