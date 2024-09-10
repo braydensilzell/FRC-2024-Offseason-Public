@@ -24,7 +24,6 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.1;
     public static final class Swerve {
-        public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         public static final COTSTalonFXSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
         COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L2);
@@ -37,8 +36,8 @@ public final class Constants {
         /* Swerve Kinematics 
          * No need to ever change this unless you are not doing a traditional rectangular/square 4 module swerve */
          public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
-            new Translation2d(wheelBase / 2.0, -trackWidth / 2.0), //3
-            new Translation2d(wheelBase / 2.0, trackWidth / 2.0), //2
+            new Translation2d(wheelBase / 2.0, trackWidth / 2.0), //3
+            new Translation2d(wheelBase / 2.0, -trackWidth / 2.0), //2
             new Translation2d(-wheelBase / 2.0, trackWidth / 2.0), //1
             new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)); //0
 
@@ -173,10 +172,7 @@ public final class Constants {
         .withKG(6)
         .withKS(0))
       .withFeedback(new FeedbackConfigs()
-        //  .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
-        //  .withFeedbackRemoteSensorID(pivotEncoderID)
       .withSensorToMechanismRatio(wristGearRatio))
-        //  .withRotorToSensorRatio(pivotGearRatio))
       .withSoftwareLimitSwitch(new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(true)
         .withReverseSoftLimitEnable(true)
