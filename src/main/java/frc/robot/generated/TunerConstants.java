@@ -225,20 +225,20 @@ public final class TunerConstants {
               public static final double kShooterVelocityUpdateFrequency = 10; // Hertz
             }
           
-            public static final class WristConstants {
-                public static final int wristTalonID = 14;
+            public static final class ArmConstants {
+                public static final int armTalonID = 14;
         
-                public static final double wristGearRatio = 111.65; // Sensor to Mechanism Ratio
+                public static final double armGearRatio = 27.10; // Sensor to Mechanism Ratio
         
-                public static final double WristIntakeAngle = 10;
+                public static final double ArmIntakeAngle = 10;
         
-                public static final double wristMinClamp = 0;
-                public static final double wristMaxClamp = 58;
+                public static final double armMinClamp = 0;
+                public static final double armMaxClamp = 114.873047;
         
-                public static final Rotation2d wristMinAngle = Rotation2d.fromDegrees(wristMinClamp);
-                public static final Rotation2d wristMaxAngle = Rotation2d.fromDegrees(wristMaxClamp);
+                public static final Rotation2d armMinAngle = Rotation2d.fromDegrees(armMinClamp);
+                public static final Rotation2d armMaxAngle = Rotation2d.fromDegrees(armMaxClamp);
         
-                public static final TalonFXConfiguration kWristConfiguration = new TalonFXConfiguration()
+                public static final TalonFXConfiguration kArmConfiguration = new TalonFXConfiguration()
               .withCurrentLimits(new CurrentLimitsConfigs()
                 .withStatorCurrentLimit(60)
                 .withSupplyCurrentLimit(60)
@@ -248,27 +248,27 @@ public final class TunerConstants {
                 .withNeutralMode(NeutralModeValue.Brake)
                 .withInverted(InvertedValue.CounterClockwise_Positive))
               .withMotionMagic(new MotionMagicConfigs()
-                .withMotionMagicCruiseVelocity(0.45)
-                .withMotionMagicAcceleration(0.45)
+                .withMotionMagicCruiseVelocity(0)
+                .withMotionMagicAcceleration(0)
                 .withMotionMagicJerk(0))
               .withSlot0(new Slot0Configs()
                 .withKV(0)
                 .withKA(0)
-                .withKP(1300) //1000
+                .withKP(20000) //1000
                 .withKI(0)
                 .withKD(1)
                 .withGravityType(GravityTypeValue.Arm_Cosine)
                 .withKG(6)
                 .withKS(0))
               .withFeedback(new FeedbackConfigs()
-              .withSensorToMechanismRatio(wristGearRatio))
+              .withSensorToMechanismRatio(armGearRatio))
               .withSoftwareLimitSwitch(new SoftwareLimitSwitchConfigs()
                 .withForwardSoftLimitEnable(true)
                 .withReverseSoftLimitEnable(true)
-                .withForwardSoftLimitThreshold(wristMaxAngle.getRotations())
-                .withReverseSoftLimitThreshold(wristMinAngle.getRotations()));
+                .withForwardSoftLimitThreshold(armMaxAngle.getRotations())
+                .withReverseSoftLimitThreshold(armMinAngle.getRotations()));
         
-                public static final MotionMagicExpoVoltage wristPositionControl = new MotionMagicExpoVoltage(0, true, 0, 0, true, false, false);
+                public static final MotionMagicExpoVoltage armPositionControl = new MotionMagicExpoVoltage(0, true, 0, 0, true, false, false);
             
                 public static final Rotation2d angleErrorTolerance = Rotation2d.fromDegrees(2.5); // Degrees
             }

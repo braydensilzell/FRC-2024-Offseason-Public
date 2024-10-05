@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Arm.Wrist;
+import frc.robot.subsystems.Arm.Arm;
+import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -28,14 +29,9 @@ public class RobotContainer {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public final CommandXboxController driver = new CommandXboxController(1); // My joystick
-  private final Joystick driverr = new Joystick(0);
+  private final CommandXboxController driverr = new CommandXboxController(0);
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  private final Wrist m_wristSubsystem = new Wrist();
-   private final JoystickButton wristUp = new JoystickButton(driverr, XboxController.Button.kY.value);
-    private final JoystickButton wristDown = new JoystickButton(driverr, XboxController.Button.kA.value);
-
-  //private final CommandXboxController wristUp = new CommandXboxController(XboxController.Button.kX.value);
-  //private final CommandXboxController wristDown = new CommandXboxController(XboxController.Button.kB.value);
+  private final Arm m_armSubsystem = new Arm();
 
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -44,20 +40,16 @@ public class RobotContainer {
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-  //private final Wrist m_wristSubsystem = new Wrist();
 
   public void teleopPeriodic() {
-
-
-  }
+}
 
      // Forward 
 
   public void configureButtonbindings() {
     
-     
-       wristUp.onTrue(new InstantCommand(() -> m_wristSubsystem.setAngle(Rotation2d.fromDegrees(20))));
-        wristDown.onTrue(new InstantCommand(() -> m_wristSubsystem.setAngle(Rotation2d.fromDegrees(0))));
+    driverr.y().whileTrue(runOnce(() -> m_armSubsystem.setAngle(.5)));
+     driverr.a().whileTrue(runOnce(() -> m_armSubsystem.setAngle(-.5)));
       
   }
   
