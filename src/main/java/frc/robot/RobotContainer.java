@@ -20,8 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Shoot;
-import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.Arm.Wrist;
 
 public class RobotContainer {
@@ -36,8 +34,6 @@ public class RobotContainer {
    private final JoystickButton wristUp = new JoystickButton(driverr, XboxController.Button.kY.value);
     private final JoystickButton wristDown = new JoystickButton(driverr, XboxController.Button.kA.value);
 
-
-  ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   //private final CommandXboxController wristUp = new CommandXboxController(XboxController.Button.kX.value);
   //private final CommandXboxController wristDown = new CommandXboxController(XboxController.Button.kB.value);
 
